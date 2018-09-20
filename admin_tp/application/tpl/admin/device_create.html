@@ -1,0 +1,118 @@
+  {include file="admin/header" /}
+  
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper id="pjax-container"">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+      
+        <div class="row">
+          <div class="col-12">
+             <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">{$pagename}</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+               <form action="/admin/device/adddevice" method="post" accept-charset="UTF-8" class="form-horizontal" pjax-container>
+                <div class="card-body">
+				{eq name="edit" value="true"} <input type="hidden" id="id" name="id" value="{$data.id}">{/eq}
+                  <div class="form-group">
+                    <label>serial</label>
+                    <input type="text" class="form-control" id="serial" name="serial" placeholder="请输入内容"{eq name="edit" value="true"} value="{$data.serial}"{/eq}>
+                  </div>
+				  <div class="form-group">
+                    <label>udid</label>
+                    <input type="text" class="form-control" id="udid" name="udid" placeholder="请输入内容"{eq name="edit" value="true"} value="{$data.udid}"{/eq}>
+                  </div>
+				    <div class="form-group">
+                    <label>BluetoothAddress</label>
+                    <input type="text" class="form-control" id="BluetoothAddress" name="BluetoothAddress" placeholder="请输入内容"{eq name="edit" value="true"} value="{$data.BluetoothAddress}"{/eq}>
+                  </div>
+				    <div class="form-group">
+                    <label>Imei</label>
+                    <input type="text" class="form-control" id="Imei" name="Imei" placeholder="请输入内容"{eq name="edit" value="true"} value="{$data.Imei}"{/eq}>
+                  </div>
+				    <div class="form-group">
+                    <label>WiFiAddress</label>
+                    <input type="text" class="form-control" id="WiFiAddress" name="WiFiAddress" placeholder="请输入内容"{eq name="edit" value="true"} value="{$data.WiFiAddress}"{/eq}>
+                  </div>
+				    <div class="form-group">
+                    <label>ecid</label>
+                    <input type="text" class="form-control" id="ecid" name="ecid" placeholder="请输入内容"{eq name="edit" value="true"} value="{$data.ecid}"{/eq}>
+                  </div>
+				 <div class="form-group">
+                    <label>ProductType</label>
+                    <input type="text" class="form-control" id="ProductType" name="ProductType" placeholder="请输入内容"{eq name="edit" value="true"} value="{$data.ProductType}"{/eq}>
+                  </div>
+				    <div class="form-group">
+                    <label>ModelNumber</label>
+                    <input type="text" class="form-control" id="ModelNumber" name="ModelNumber" placeholder="请输入内容"{eq name="edit" value="true"} value="{$data.ModelNumber}"{/eq}>
+                  </div>
+				    <div class="form-group">
+                    <label>RegionInfo</label>
+                    <input type="text" class="form-control" id="RegionInfo" name="RegionInfo" placeholder="请输入内容"{eq name="edit" value="true"} value="{$data.RegionInfo}"{/eq}>
+                  </div>
+				 <div class="form-group">
+                    <label>Ethernet</label>
+                    <input type="text" class="form-control" id="Ethernet" name="Ethernet" placeholder="请输入内容"{eq name="edit" value="true"} value="{$data.Ethernet}"{/eq}>
+                  </div>
+				    <div class="form-group">
+                    <label>ICCID</label>
+                    <input type="text" class="form-control" id="ICCID" name="ICCID" placeholder="请输入内容"{eq name="edit" value="true"} value="{$data.ICCID}"{/eq}>
+                  </div>
+				    <div class="form-group">
+                    <label>IMSI</label>
+                    <input type="text" class="form-control" id="IMSI" name="IMSI" placeholder="请输入内容"{eq name="edit" value="true"} value="{$data.IMSI}"{/eq}>
+                  </div>
+				 <div class="form-group">
+                    <label>BasebandSerialNumber</label>
+                    <input type="text" class="form-control" id="BasebandSerialNumber" name="BasebandSerialNumber" placeholder="请输入内容"{eq name="edit" value="true"} value="{$data.BasebandSerialNumber}"{/eq}>
+                  </div>
+				    <div class="form-group">
+                    <label>BasebandMasterKeyHash</label>
+                    <input type="text" class="form-control" id="BasebandMasterKeyHash" name="BasebandMasterKeyHash" placeholder="请输入内容"{eq name="edit" value="true"} value="{$data.BasebandMasterKeyHash}"{/eq}>
+                  </div>
+				    <div class="form-group">
+                    <label>BasebandChipID</label>
+                    <input type="text" class="form-control" id="BasebandChipID" name="BasebandChipID" placeholder="请输入内容"{eq name="edit" value="true"} value="{$data.BasebandChipID}"{/eq}>
+                  </div>
+				 <div class="form-group">
+                    <label>Record_at</label>
+                    <input type="text" class="form-control" id="Record_at" name="Record_at" placeholder="请输入内容"{eq name="edit" value="true"} value="{$data.Record_at}"{/eq}>
+                  </div>
+				
+				  <div class="form-group">
+                    <label>状态</label>
+                    <select class="form-control" name="status">
+						{foreach name="statuslable" item="vo" }
+						<option value="{$key}" {eq name="edit" value="true"}{eq name="data.status" value="$key"}selected{/eq}{/eq}>{$vo}</option>
+						{/foreach}
+                    </select>
+                  </div>
+				<div class="form-group">
+                    <label>添加时间：{eq name="edit" value="true"}{$data.intime|gettime}{else/}{php}echo gettime(time());{/php}{/eq}</label>
+                  </div>
+				 </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">提交</button>
+                </div>
+              </form>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+ 
+  <!-- /.content-wrapper -->
+  {include file="admin/footer" /}

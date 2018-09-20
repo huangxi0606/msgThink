@@ -1,0 +1,327 @@
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+	
+	  <div class="row"><div class="col-md-12"><script>
+    function initLayer() {
+        var importLayer = layer.open({
+            zIndex: 1999,
+            type: 1,
+            skin: 'grid-map-modal', //样式类名
+            title: '批量导入',
+            anim: 2,
+            area:  ['300px', '200px'],
+            shadeClose: true, //开启遮罩关闭
+            content: $('#importLayer')
+        });
+    }
+
+    var Upload = function (file) {
+        this.file = file;
+    };
+
+    Upload.prototype.getType = function () {
+        return this.file.type;
+    };
+    Upload.prototype.getSize = function () {
+        return this.file.size;
+    };
+    Upload.prototype.getName = function () {
+        return this.file.name;
+    };
+    Upload.prototype.doUpload = function () {
+        var that = this;
+        var formData = new FormData();
+        // add assoc key values, this will be posts values
+        formData.append("file", this.file, this.getName());
+        formData.append("upload_file", true);
+        $.ajaxSetup({
+            headers: {
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: "/admin/account/import",
+            xhr: function () {
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) {
+                    myXhr.upload.addEventListener('progress', that.progressHandling, false);
+                }
+                return myXhr;
+            },
+            success: function (data) {
+				toastr.success(data.message);
+				$.pjax.reload('#pjax-container');
+				layer.closeAll();
+                //alert(data.message);
+            },
+            error: function (error) {
+                try {
+                    json = error.responseJSON;
+					toastr.error(json.message);
+                    //alert(json.message);
+                } catch (e) {
+                    console.log(e);
+					toastr.error('系统错误请重试');
+                    //alert('系统错误请重试');
+                }
+            },
+            complete: function () {
+                $('#importConfirm').attr("disabled", false);
+                $('#importConfirm').html("上传");
+            },
+            async: true,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    };
+    $(function () {
+        $('#importConfirm').click(function (e) {
+            var file = $('#importFile')[0].files[0];
+            if (!file) alert('请选择文件');
+            var upload = new Upload(file);
+            $(this).attr("disabled", true);
+            $(this).html("处理中");
+            upload.doUpload();
+        });
+    });
+</script>
+
+<div id="importLayer" style="display: none;clear: both">
+
+    <div class="box-body" style="text-align: center">
+        <div class="form-group" style="margin-top: 5px">
+            <p><a target="_blank" href="/static/import_account.index.csv">下载实例csv文件</a></p>
+        </div>
+        <hr>
+        <div class="form-group" style="text-align: center">
+            <input type="file" id="importFile" style="margin-left: 50px">
+            <!--<p class="help-block" style="margin-top: 20px">请务必严格按照模板填写信息</p>-->
+        </div>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer" style="text-align: center">
+        <a type="submit" class="btn btn-default" id="importConfirm">上传</a>
+    </div>
+</div>
+    </div></div>
+	
+      <div class="container-fluid">
+      
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+				<div class="btn-group pull-right" style="margin-right: 10px">
+				{foreach name="statuslable" item="vo" }
+				<span class="label label-info badge">{$vo}:{:getCount($key,'account')}</span>&nbsp;
+				{/foreach}
+					</div>
+				   <span>
+            <input type="checkbox" class="grid-select-all" />&nbsp;
+				<div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-default">操作</button>
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                          </button>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">删除</a>
+                          </div>
+                        </div>
+                      </div>
+		 <a class="btn btn-sm btn-primary  btn-grid-refresh" style="color:white;"><i class="fa fa-refresh"></i> 刷新</a>          <a href="javascript:trash()" class="btn btn-sm btn-danger">
+        <i class="fa fa-trash"></i>&nbsp;&nbsp;清空全部
+        </a>
+        <a href="javascript:initLayer()" class="btn btn-sm btn-info">
+        <i class="fa fa-cloud"></i>&nbsp;&nbsp;导入
+        </a>
+        <a href="javascript:rebuild()" class="btn btn-sm btn-info">
+        <i class="fa fa-wrench"></i>&nbsp;&nbsp;重建账号队列
+        </a>
+        </span>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover">
+                  <tr>
+				  <th> </th>
+                    <th>ID<a class="fa fa-fw fa-sort{eq name='_sort.column' value='id'}{eq name='_sort.sort' value='true'}-amount-{$_sort.type}{/eq}{/eq}" href="/admin/account/index/task?_sort%5Bcolumn%5D=id&_sort%5Btype%5D={eq name='_sort.column' value='id'}{eq name='_sort.type' value='asc'}desc{else}asc{/eq}{else}asc{/eq}"></a></th>
+                    <th>帐号<a class="fa fa-fw fa-sort{eq name='_sort.column' value='email'}{eq name='_sort.sort' value='true'}-amount-{$_sort.type}{/eq}{/eq}" href="/admin/account/index/task?_sort%5Bcolumn%5D=email&_sort%5Btype%5D={eq name='_sort.column' value='email'}{eq name='_sort.type' value='asc'}desc{else}asc{/eq}{else}asc{/eq}"></a></th>
+                    <th>密码</th>
+					<th>导入时间</th>
+                    <th>最后活跃时间<a class="fa fa-fw fa-sort{eq name='_sort.column' value='uptime'}{eq name='_sort.sort' value='true'}-amount-{$_sort.type}{/eq}{/eq}" href="/admin/account/index/task?_sort%5Bcolumn%5D=uptime&_sort%5Btype%5D={eq name='_sort.column' value='uptime'}{eq name='_sort.type' value='asc'}desc{else}asc{/eq}{else}asc{/eq}"></a></th>
+                    <th>状态<a class="fa fa-fw fa-sort{eq name='_sort.column' value='status'}{eq name='_sort.sort' value='true'}-amount-{$_sort.type}{/eq}{/eq}" href="/admin/account/index/task?_sort%5Bcolumn%5D=status&_sort%5Btype%5D={eq name='_sort.column' value='status'}{eq name='_sort.type' value='asc'}desc{else}asc{/eq}{else}asc{/eq}"></a></th>
+					 <th>操作</th>
+                  </tr>
+				  {volist name="data" id="vo"}
+					  <tr>
+					   <td><input type="checkbox" class="grid-row-checkbox" data-id="{$vo.id}" /></td>
+						<td>{$vo.id}</td>
+						<td>{$vo.email}</td>
+						<td>{$vo.password}</td>
+						<td>{$vo.intime|getTime}</td>
+						<td>{$vo.uptime|getTime}</td>
+						<td><span class="label label-{switch name="vo.status"}{case value="1"}success{/case}{case value="2|3"}danger{/case}{case value="0"}info{/case}{default /}default{/switch} badge">{php}echo $statuslable[$vo['status']];{/php}</span></td>
+						<td>
+					   <a href="/admin/account/create/id/{$vo.id}/"><i class="fa fa-edit"></i></a>
+					   <a href="javascript:void(0);" data-id="{$vo.id}" class="grid-row-delete"><i class="fa fa-trash"></i></a>
+					</td>
+					  </tr>
+					{/volist}
+                </table>
+              </div>
+			  <div class="box-footer clearfix">
+					<span class="p-3">从 <b>1</b> 到 <b>20</b> ，总共 <b>{$count}</b> 条</span>
+					 {$page}
+<!--
+			<label class="control-label pull-right" style="margin-right: 10px; font-weight: 100;">
+
+					<small>显示</small>&nbsp;
+					<select class="form-control" name="per-page">
+						<option value="http://aso.51o.net:9001/admin/app/account?per_page=10">10</option>
+						<option value="http://aso.51o.net:9001/admin/app/account?per_page=20" selected="">20</option>
+						<option value="http://aso.51o.net:9001/admin/app/account?per_page=30">30</option>
+						<option value="http://aso.51o.net:9001/admin/app/account?per_page=50">50</option>
+						<option value="http://aso.51o.net:9001/admin/app/account?per_page=100">100</option>
+					</select>
+					&nbsp;<small>条</small>
+				</label>
+-->
+<script data-exec-on-popstate>
+
+ $(function () {
+            
+    $('.grid-row-checkbox').iCheck({checkboxClass:'icheckbox_minimal-blue'}).on('ifChanged', function () {
+    if (this.checked) {
+        $(this).closest('tr').css('background-color', '#ffffd5');
+    } else {
+        $(this).closest('tr').css('background-color', '');
+    }
+});
+
+$('.grid-select-all').iCheck({checkboxClass:'icheckbox_minimal-blue'});
+
+$('.grid-select-all').on('ifChanged', function(event) {
+    if (this.checked) {
+        $('.grid-row-checkbox').iCheck('check');
+    } else {
+        $('.grid-row-checkbox').iCheck('uncheck');
+    }
+});
+$('.grid-row-delete').unbind('click').click(function() {
+
+    var id = $(this).data('id');
+
+    swal({
+      title: "确认删除?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "确认",
+      closeOnConfirm: false,
+      cancelButtonText: "取消"
+    },
+    function(){
+        $.ajax({
+            method: 'post',
+            url: '/admin/account/delaccount/id/' + id,
+            data: {
+            },
+            success: function (data) {
+                $.pjax.reload('#pjax-container');
+                if (typeof data === 'object') {
+                    if (data.status) {
+                        swal(data.message, '', 'success');
+                    } else {
+                        swal(data.message, '', 'error');
+                    }
+                }
+            }
+        });
+    });
+});
+
+var selectedRows = function () {
+    var selected = [];
+    $('.grid-row-checkbox:checked').each(function(){
+        selected.push($(this).data('id'));
+    });
+
+    return selected;
+}
+
+$('.dropdown-item').on('click', function() {
+
+    var id = selectedRows().join();
+
+    swal({
+      title: "确认删除?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "确认",
+      closeOnConfirm: false,
+      cancelButtonText: "取消"
+    },
+    function(){
+        $.ajax({
+            method: 'post',
+            url: '/admin/account/delaccount/id/' + id,
+            data: {
+               
+            },
+            success: function (data) {
+                $.pjax.reload('#pjax-container');
+
+                if (typeof data === 'object') {
+                    if (data.status) {
+                        swal(data.message, '', 'success');
+                    } else {
+                        swal(data.message, '', 'error');
+                    }
+                }
+            }
+        });
+    });
+});
+
+
+$('.btn-grid-refresh').on('click', function() {
+    $.pjax.reload('#pjax-container');
+    toastr.success('刷新成功 !');
+});
+
+  });
+  
+ function trash() {
+        if (window.confirm("确认删除所有数据?")) {
+            $.ajax({
+                url: "/admin/account/trash",
+                success: function (data) {
+                    $.pjax.reload('#pjax-container');
+                    toastr.success(data.message);
+                },
+                error: function () {
+                    toastr.error('请求失败，请稍后再试');
+                }
+            });
+        }
+    }
+</script>
+
+				</div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->

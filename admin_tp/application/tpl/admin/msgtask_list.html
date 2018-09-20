@@ -1,0 +1,216 @@
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+	
+      <div class="container-fluid">
+      
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+				
+				<div class="btn-group pull-right" style="margin-right: 10px">
+						<a href="/admin/msgtask/create" class="btn btn-sm btn-success">
+							<i class="fa fa-save"></i>&nbsp;&nbsp;新增
+						</a>
+					</div>
+
+				   <span>
+            <input type="checkbox" class="grid-select-all" />&nbsp;
+				<div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-default">操作</button>
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                          </button>
+                          <div class="dropdown-menu">
+                        <!--   <a class="dropdown-item" href="#">删除</a>-->
+                          </div>
+                        </div>
+                      </div>
+					  
+		<a class="btn btn-sm btn-primary  btn-grid-refresh" style="color:white;"><i class="fa fa-refresh"></i> 刷新</a> 
+        <a href="javascript:rebuild()" class="btn btn-sm btn-info">
+        <i class="fa fa-wrench"></i>&nbsp;&nbsp;重建任务队列
+        </a>
+        </span>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover">
+                  <tr>
+				  <th> </th>
+                    <th>ID<a class="fa fa-fw fa-sort{eq name='_sort.column' value='id'}{eq name='_sort.sort' value='true'}-amount-{$_sort.type}{/eq}{/eq}" href="/admin/msgtask/index/task?_sort%5Bcolumn%5D=id&_sort%5Btype%5D={eq name='_sort.column' value='id'}{eq name='_sort.type' value='asc'}desc{else}asc{/eq}{else}asc{/eq}"></a></th>
+                    <th>任务名</th>
+                    <th>发送类型</th>
+					 <th>在线设备数/上限</th>
+					 <th>已发送/失败/总数</th>
+					 <th>添加时间<a class="fa fa-fw fa-sort{eq name='_sort.column' value='intime'}{eq name='_sort.sort' value='true'}-amount-{$_sort.type}{/eq}{/eq}" href="/admin/msgtask/index/task?_sort%5Bcolumn%5D=intime&_sort%5Btype%5D={eq name='_sort.column' value='intime'}{eq name='_sort.type' value='asc'}desc{else}asc{/eq}{else}asc{/eq}"></a></th>
+                    <th>最后活跃时间<a class="fa fa-fw fa-sort{eq name='_sort.column' value='uptime'}{eq name='_sort.sort' value='true'}-amount-{$_sort.type}{/eq}{/eq}" href="/admin/msgtask/index/task?_sort%5Bcolumn%5D=uptime&_sort%5Btype%5D={eq name='_sort.column' value='uptime'}{eq name='_sort.type' value='asc'}desc{else}asc{/eq}{else}asc{/eq}"></a></th>
+					 <th>启用</th>
+                    <th>状态<a class="fa fa-fw fa-sort{eq name='_sort.column' value='status'}{eq name='_sort.sort' value='true'}-amount-{$_sort.type}{/eq}{/eq}" href="/admin/msgtask/index/task?_sort%5Bcolumn%5D=status&_sort%5Btype%5D={eq name='_sort.column' value='status'}{eq name='_sort.type' value='asc'}desc{else}asc{/eq}{else}asc{/eq}"></a></th>
+					 <th>操作</th>
+                  </tr>
+				  {volist name="data" id="vo"}
+				  {php}
+				  $MsgInfo = getMsgInfo($vo['id']);
+				  $sendnum = intval($MsgInfo['sendnum'])*2;
+				  if(intval($MsgInfo['senderrnum'])>intval($MsgInfo['sendnum'])){
+					$senderrnum = intval($MsgInfo['senderrnum']) - intval($MsgInfo['sendnum']);
+				  }else{
+					$senderrnum = intval($MsgInfo['senderrnum']);
+				  }
+				  if($sendnum>intval($MsgInfo['sendlistnum'])){
+					$senderrnum = intval($MsgInfo['sendlistnum'])-$senderrnum;
+					$senderrnum = intval($MsgInfo['senderrnum']);
+				  }
+				  {/php}
+					  <tr>
+					   <td><input type="checkbox" class="grid-row-checkbox" data-id="{$vo.id}" /></td>
+						<td>{$vo.id}</td>
+						<td>{$vo.name}</td>
+						<td>{empty name="vo.sendlist"}内建{else}上传{/empty}</td>
+						<td>{$vo.id|getmachinecount}/{$vo.machinenum}</td>
+						<td>{$sendnum}/{$senderrnum}/{$vo.sendmaxnum}</td>
+						<td>{$vo.intime|getTime}</td>
+						<td>{$vo.uptime|getTime}</td>
+						<td><input type="checkbox" class="grid-switch-enable"  data-key="{$vo.id}" {neq name="vo.status" value="2"}checked{/neq}/></td>
+
+						<td><span class="label label-{switch name="vo.status"}{case value="1"}success{/case}{case value="2"}danger{/case}{case value="3"}info{/case}{case value="5"}warning{/case}{default /}default{/switch} badge">{php}echo $statuslable[$vo['status']];{/php}</span></td>
+						<td>
+					   <a href="/admin/msgtask/create/id/{$vo.id}"><i class="fa fa-edit"></i></a>
+					   <!--   <a href="javascript:void(0);" data-id="{$vo.id}" class="grid-row-delete"><i class="fa fa-trash"></i></a>-->
+					</td>
+					  </tr>
+					{/volist}
+                </table>
+              </div>
+			  <div class="box-footer clearfix">
+				<span class="p-3">从 <b>1</b> 到 <b>20</b> ，总共 <b>{$count}</b> 条</span>
+					 {$page}
+<script data-exec-on-popstate>
+
+ $(function () {
+            
+    $('.grid-row-checkbox').iCheck({checkboxClass:'icheckbox_minimal-blue'}).on('ifChanged', function () {
+    if (this.checked) {
+        $(this).closest('tr').css('background-color', '#ffffd5');
+    } else {
+        $(this).closest('tr').css('background-color', '');
+    }
+});
+
+$('.grid-select-all').iCheck({checkboxClass:'icheckbox_minimal-blue'});
+
+$('.grid-select-all').on('ifChanged', function(event) {
+    if (this.checked) {
+        $('.grid-row-checkbox').iCheck('check');
+    } else {
+        $('.grid-row-checkbox').iCheck('uncheck');
+    }
+});
+
+$('.grid-row-delete').unbind('click').click(function() {
+
+    var id = $(this).data('id');
+
+    swal({
+      title: "确认删除?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "确认",
+      closeOnConfirm: false,
+      cancelButtonText: "取消"
+    },
+    function(){
+        $.ajax({
+            method: 'post',
+            url: '/admin/msgtask/deltask/id/' + id,
+            data: {
+            },
+            success: function (data) {
+
+                $.pjax.reload('#pjax-container');
+                if (typeof data === 'object') {
+                    if (data.status) {
+                        swal(data.message, '', 'success');
+                    } else {
+                        swal(data.message, '', 'error');
+                    }
+                }
+            }
+        });
+    });
+});
+
+$('.btn-grid-refresh').on('click', function() {
+    // $.pjax.reload('#pjax-container');
+    window.location.reload()
+    toastr.success('刷新成功 !');
+});
+
+$('.grid-switch-enable').bootstrapSwitch({
+    size:'mini',
+    onText: '启用',
+    offText: '禁用',
+    onColor: 'success',
+    offColor: 'danger',
+    onSwitchChange: function(event, state){
+
+        $(this).val(state ? 'on' : 'off');
+
+        var pk = $(this).data('key');
+        var value = $(this).val();
+
+        $.ajax({
+            url: "/admin/msgtask/enable/id/" + pk,
+            type: "POST",
+            data: {
+                enable: value,
+            },
+            success: function (data) {
+                toastr.success(data.message);
+            }
+        });
+    }
+});
+  });
+
+
+
+ function rebuild() {
+     // console.log('ok');
+     $.ajax({
+         method: 'post',
+         url: '/admin/msgtask/rebuild/',
+         data: {
+         },
+         success: function (data) {
+             console.log(data);
+             if (typeof data === 'object') {
+                 if (data.status) {
+                     swal(data.message, '', 'success');
+                 } else {
+                     swal(data.message, '', 'error');
+                 }
+             }
+         }
+     });
+ }
+</script>
+
+				</div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->

@@ -1,0 +1,86 @@
+  {include file="admin/header" /}
+  
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper id="pjax-container"">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+      
+        <div class="row">
+          <div class="col-12">
+             <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">{$pagename}</h3>
+				 <div class="card-tools">
+				设备授权：<input type="checkbox" class="grid-switch-enable"  data-key="{$openmachine}" {eq name="openmachine" value="1"}checked{/eq}/>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+               <form action="/admin/machineauthorize/save" method="post" accept-charset="UTF-8" class="form-horizontal" pjax-container>
+                <div class="card-body">
+			
+                  <div class="form-group">
+                    <label>状态为0：</label>
+                    <input type="text" class="form-control" id="opendevicelist" name="opendevicelist" placeholder="请输入设备名称以，分割" value="{$opendevicelist}"{/eq}>
+                  </div>
+				  
+				 </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">提交</button>
+                </div>
+              </form>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+ <script data-exec-on-popstate>
+    $(function () {
+
+	
+	$('.sendmaxnum:not(.initialized)')
+    .addClass('initialized')
+    .bootstrapNumber({
+        upClass: 'success',
+        downClass: 'primary',
+        center: true
+    });
+	$('.grid-switch-enable').bootstrapSwitch({
+    size:'mini',
+    onText: '启用',
+    offText: '禁用',
+    onColor: 'success',
+    offColor: 'danger',
+    onSwitchChange: function(event, state){
+
+        $(this).val(state ? 'on' : 'off');
+        var value = $(this).val();
+
+        $.ajax({
+            url: "/admin/machineauthorize/openmachine/",
+            type: "POST",
+            data: {
+                enable: value,
+            },
+            success: function (data) {
+                toastr.success(data.message);
+            }
+        });
+    }
+});
+
+    });
+</script>
+  <!-- /.content-wrapper -->
+  {include file="admin/footer" /}

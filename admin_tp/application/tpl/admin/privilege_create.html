@@ -1,0 +1,140 @@
+  {include file="admin/header" /}
+  
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper id="pjax-container"">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+	<div class="row">
+        <div class="col-md-12">
+    </div></div>
+	
+      <div class="container-fluid">
+      
+        <div class="row">
+          <div class="col-12">
+             <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">{$pagename}</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+               <form action="/admin/privilege/addprivilege" method="post" accept-charset="UTF-8" class="form-horizontal" pjax-container>
+                <div class="card-body">
+				{eq name="edit" value="true"} <input type="hidden" id="id" name="id" value="{$data.id}">{/eq}
+                  <div class="form-group">
+                      {volist name="pris" id="vo"}
+                          <option value="{$vo.id}"><if condition="$vo['parentid'] neq 0">|</if><?php echo str_repeat('-', $vo['level']*8);?>{$vo.pri_name}</option>
+                      {/volist}
+                  </div>
+                    <div class="form-group">
+                        <label>上级权限</label>
+                        <select name="parentid" id="catid" class="required">
+                            <option value="0">顶级权限</option>
+                            {volist name="pris" id="vo"}
+                            <option value="{$vo.id}"><if condition="$vo['parentid'] neq 0">|</if><?php echo str_repeat('-', $vo['level']*8);?>{$vo.pri_name}</option>
+                            {/volist}
+                        </select>
+
+                    </div>
+                      <div class="form-group">
+                        <label>权限名称</label>
+                          <input type="text" class="form-control" id="pri_name" name="pri_name" placeholder="输入权限名称"{eq name="edit" value="true"} value="{$data.pri_name}"{/eq}>
+                      </div>
+                    <div class="form-group">
+                        <label>模块名称</label>
+                        <input type="text" class="form-control" id="mname" name="mname" placeholder="输入模块名称"{eq name="edit" value="true"} value="{$data.mname}"{/eq}>
+                    </div>
+                    <div class="form-group">
+                        <label> 控制器名称</label>
+                        <input type="text" class="form-control" id="cname" name="cname" placeholder="输入控制器名称"{eq name="edit" value="true"} value="{$data.cname}"{/eq}>
+                    </div>
+                    <div class="form-group">
+                        <label> 方法名称</label>
+                        <input type="text" class="form-control" id="aname" name="aname" placeholder="输入控制器名称"{eq name="edit" value="true"} value="{$data.aname}"{/eq}>
+                    </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">提交</button>
+                </div>
+              </form>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <script language="javascript" src="/static/admin/plugins/jquery/jquery.base64.js"></script>
+   <script data-exec-on-popstate>
+  $.base64.utf8encode = true;
+	content_val = $("#content").val()
+      if(content_val != ""){
+		$("#content_").val($.base64.atob(content_val, true));
+      }
+    $(function () {
+	$('.machinenum:not(.initialized)')
+    .addClass('initialized')
+    .bootstrapNumber({
+        upClass: 'success',
+        downClass: 'primary',
+        center: true
+    });
+	
+	$('.num:not(.initialized)')
+    .addClass('initialized')
+    .bootstrapNumber({
+        upClass: 'success',
+        downClass: 'primary',
+        center: true
+    });
+	
+	$('.sendmaxnum:not(.initialized)')
+    .addClass('initialized')
+    .bootstrapNumber({
+        upClass: 'success',
+        downClass: 'primary',
+        center: true
+    });
+	
+		$('.enable.la_checkbox').bootstrapSwitch({
+			size:'small',
+			onText: '启用',
+			offText: '禁用',
+			onColor: 'success',
+			offColor: 'danger',
+			onSwitchChange: function(event, state) {
+				$('.enable').val(state ? '1' : '0').change();
+			}
+		});
+	
+	$('#content').bind('input propertychange', function(){
+       content_val = $("#content").val()
+      if(content_val != ""){
+		$("#content_").val($.base64.atob(content_val, true));
+      }else{
+        
+      };
+    });
+	
+	$('#content_').bind('input propertychange', function(){
+	   content_val = $("#content_").val()
+      if(content_val != ""){
+		$("#content").val($.base64.btoa(content_val, true));
+      }else{
+        
+      };
+    });
+    });
+</script>
+
+ 
+  <!-- /.content-wrapper -->
+  {include file="admin/footer" /}
+

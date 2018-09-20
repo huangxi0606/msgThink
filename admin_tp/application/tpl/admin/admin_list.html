@@ -1,0 +1,180 @@
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+	
+	  <div class="row"><div class="col-md-12"><script>
+</script>
+    </div></div>
+	
+      <div class="container-fluid">
+      
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                  <div class="btn-group pull-right" style="margin-right: 10px">
+                      <a href="/admin/admin/create" class="btn btn-sm btn-success">
+                          <i class="fa fa-save"></i>&nbsp;&nbsp;新增
+                      </a>
+                  </div>
+				   <span>
+            <input type="checkbox" class="grid-select-all" />&nbsp;
+				<div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-default">操作</button>
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                          </button>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">删除</a>
+                          </div>
+                        </div>
+                      </div>
+		 <a class="btn btn-sm btn-primary  btn-grid-refresh" style="color:white;"><i class="fa fa-refresh"></i> 刷新</a>
+        </span>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover">
+                  <tr>
+				  <th> </th>
+                    <th>ID</th>
+                    <th>帐号</th>
+                      <th>角色名称</th>
+					 <th>操作</th>
+                  </tr>
+				  {volist name="datuy" id="vo"}
+					  <tr>
+					   <td><input type="checkbox" class="grid-row-checkbox" data-id="{$vo.id}" /></td>
+						<td>{$vo.id}</td>
+						<td>{$vo.name}</td>
+                          <td>{$vo.role}</td>
+                          <td>
+					   <a href="/admin/admin/create/id/{$vo.id}/"><i class="fa fa-edit"></i></a>
+					   <a href="javascript:void(0);" data-id="{$vo.id}" class="grid-row-delete"><i class="fa fa-trash"></i></a>
+					</td>
+					  </tr>
+					{/volist}
+                </table>
+              </div>
+			  <div class="box-footer clearfix">
+					<span class="p-3">从 <b>1</b> 到 <b>20</b> ，总共 <b>{$count}</b> 条</span>
+					 {$page}
+<script data-exec-on-popstate>
+
+ $(function () {
+            
+    $('.grid-row-checkbox').iCheck({checkboxClass:'icheckbox_minimal-blue'}).on('ifChanged', function () {
+    if (this.checked) {
+        $(this).closest('tr').css('background-color', '#ffffd5');
+    } else {
+        $(this).closest('tr').css('background-color', '');
+    }
+});
+
+$('.grid-select-all').iCheck({checkboxClass:'icheckbox_minimal-blue'});
+
+$('.grid-select-all').on('ifChanged', function(event) {
+    if (this.checked) {
+        $('.grid-row-checkbox').iCheck('check');
+    } else {
+        $('.grid-row-checkbox').iCheck('uncheck');
+    }
+});
+$('.grid-row-delete').unbind('click').click(function() {
+
+    var id = $(this).data('id');
+
+    swal({
+      title: "确认删除?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "确认",
+      closeOnConfirm: false,
+      cancelButtonText: "取消"
+    },
+    function(){
+        $.ajax({
+            method: 'post',
+            url: '/admin/admin/deladmin/id/' + id,
+            data: {
+            },
+            success: function (data) {
+                $.pjax.reload('#pjax-container');
+                if (typeof data === 'object') {
+                    if (data.status) {
+                        swal(data.message, '', 'success');
+                    } else {
+                        swal(data.message, '', 'error');
+                    }
+                }
+            }
+        });
+    });
+});
+
+var selectedRows = function () {
+    var selected = [];
+    $('.grid-row-checkbox:checked').each(function(){
+        selected.push($(this).data('id'));
+    });
+
+    return selected;
+}
+
+$('.dropdown-item').on('click', function() {
+
+    var id = selectedRows().join();
+
+    swal({
+      title: "确认删除?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "确认",
+      closeOnConfirm: false,
+      cancelButtonText: "取消"
+    },
+    function(){
+        $.ajax({
+            method: 'post',
+            url: '/admin/admin/deladmin/id/' + id,
+            data: {
+               
+            },
+            success: function (data) {
+                $.pjax.reload('#pjax-container');
+
+                if (typeof data === 'object') {
+                    if (data.status) {
+                        swal(data.message, '', 'success');
+                    } else {
+                        swal(data.message, '', 'error');
+                    }
+                }
+            }
+        });
+    });
+});
+$('.btn-grid-refresh').on('click', function() {
+    $.pjax.reload('#pjax-container');
+    toastr.success('刷新成功 !');
+});
+
+  });
+</script>
+
+				</div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->

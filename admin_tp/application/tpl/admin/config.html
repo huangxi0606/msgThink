@@ -1,0 +1,47 @@
+  {include file="admin/header" /}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper id="pjax-container"">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    </section>
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+             <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">{$pagename}</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                <!--<div class="card-body">-->
+                  <!--<div class="form-group">-->
+                    <!--<label>php版本:7.2</label>-->
+                  <!--</div>-->
+				<!--<div class="form-group">-->
+                    <!--<label>Mysql版本:</label>-->
+                 <!--</div>-->
+				 <!--</div>-->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+ <script data-exec-on-popstate>
+    $(function(){
+	$('.sendmaxnum:not(.initialized)')
+    .addClass('initialized')
+    .bootstrapNumber({
+        upClass: 'success',
+        downClass: 'primary',
+        center: true
+    });
+    });
+</script>
+  <!-- /.content-wrapper -->
+  {include file="admin/footer" /}

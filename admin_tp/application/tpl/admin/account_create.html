@@ -1,0 +1,62 @@
+  {include file="admin/header" /}
+  
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper id="pjax-container"">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+      
+        <div class="row">
+          <div class="col-12">
+             <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">{$pagename}</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+               <form action="/admin/account/addaccount" method="post" accept-charset="UTF-8" class="form-horizontal" pjax-container>
+                <div class="card-body">
+				{eq name="edit" value="true"} <input type="hidden" id="id" name="id" value="{$data.id}">{/eq}
+                  <div class="form-group">
+                    <label>email</label>
+                    <input type="text" class="form-control" id="email" name="email" placeholder="输入email"{eq name="edit" value="true"} value="{$data.email}"{/eq}>
+                  </div>
+				<div class="form-group">
+                    <label>password</label>
+                    <input type="text" class="form-control" id="password" name="password" placeholder="输入password"{eq name="edit" value="true"} value="{$data.password}"{/eq}>
+                 </div>
+				  <div class="form-group">
+                    <label>状态</label>
+                    <select class="form-control" name="status">
+					{foreach name="statuslable" item="vo" }
+						<option value="{$key}" {eq name="edit" value="true"}{eq name="data.status" value="$key"}selected{/eq}{/eq}>{$vo}</option>
+					{/foreach}
+					
+                    </select>
+                  </div>
+                <div class="form-group">
+                    <label>添加时间：{eq name="edit" value="true"}{$data.intime|gettime}{else/}{php}echo gettime(time());{/php}{/eq}</label>
+                  </div>
+				 </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">提交</button>
+                </div>
+              </form>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+ 
+  <!-- /.content-wrapper -->
+  {include file="admin/footer" /}

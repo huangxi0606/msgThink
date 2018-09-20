@@ -1,0 +1,386 @@
+  {include file="admin/header" /}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" id="pjax-container">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    </section>
+    <!-- Main content -->
+    <section class="content">
+	<div class="row"><div class="col-md-12">
+	  <script>
+	  function empytsendlist(){
+		$('#sendlist').val('');
+	  }
+    function initLayer() {
+        var importLayer = layer.open({
+            zIndex: 1999,
+            type: 1,
+            skin: 'grid-map-modal', //样式类名
+            title: '上传自定义收件人',
+            anim: 2,
+            area:  ['300px', '200px'],
+            shadeClose: true, //开启遮罩关闭
+            content: $('#importLayer')
+        });
+    }
+    var Upload = function (file) {
+        this.file = file;
+    };
+    Upload.prototype.getType = function () {
+        return this.file.type;
+    };
+    Upload.prototype.getSize = function () {
+        return this.file.size;
+    };
+    Upload.prototype.getName = function () {
+        return this.file.name;
+    };
+    Upload.prototype.doUpload = function () {
+        var that = this;
+        var formData = new FormData();
+
+        // add assoc key values, this will be posts values
+        formData.append("file", this.file, this.getName());
+        formData.append("upload_file", true);
+        $.ajaxSetup({
+            headers: {
+
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: "/admin/msgtask/import",
+            xhr: function () {
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) {
+                    myXhr.upload.addEventListener('progress', that.progressHandling, false);
+                }
+                return myXhr;
+            },
+           success: function (data) {
+				$('#sendlist').val(data.url);
+				toastr.success(data.message);
+				//$.pjax.reload('#pjax-container');
+				layer.closeAll();
+                //alert(data.message);
+            },
+            error: function (error) {
+                try {
+                    json = error.responseJSON;
+					toastr.error(json.message);
+                    //alert(json.message);
+                } catch (e) {
+                    console.log(e);
+					toastr.error('系统错误请重试');
+                    //alert('系统错误请重试');
+                }
+            },
+            complete: function () {
+                $('#importConfirm').attr("disabled", false);
+                $('#importConfirm').html("上传");
+            },
+            async: true,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    };
+
+    $(function () {
+        $('#importConfirm').click(function (e) {
+            var file = $('#importFile')[0].files[0];
+            if (!file) alert('请选择文件');
+            var upload = new Upload(file);
+            $(this).attr("disabled", true);
+            $(this).html("处理中");
+            upload.doUpload();
+        });
+
+    });
+
+</script>
+<div id="importLayer" style="display: none;clear: both">
+    <div class="box-body" style="text-align: center">
+        <div class="form-group" style="margin-top: 5px">
+            <p><a target="_blank" href="/static/import_device.index.csv">下载实例csv文件</a></p>
+        </div>
+        <hr>
+        <div class="form-group" style="text-align: center">
+            <input type="file" id="importFile" style="margin-left: 50px">
+            <!--<p class="help-block" style="margin-top: 20px">请务必严格按照模板填写信息</p>-->
+        </div>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer" style="text-align: center">
+        <a type="submit" class="btn btn-default" id="importConfirm">上传</a>
+    </div>
+</div>
+    </div></div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+             <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">{$pagename}</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+               <form action="/admin/msgtask/addtask" method="post" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data" pjax-container>
+                <div class="card-body">
+				{eq name="edit" value="true"} <input type="hidden" id="id" name="id" value="{$data.id}">{/eq}
+				<input type="hidden" id="sendlist" name="sendlist" value="{eq name="edit" value="true"}{$data.sendlist}{/eq}">
+                    <input type="hidden" id="record" name="record" value="{eq name="edit" value="true"}{$data.record}{/eq}">
+                    <div class="form-group">
+                        <label>类型排序</label>
+                        <div id ="sel">{eq name="edit" value="true"}{$data.record}{/eq}</div>
+                        <button id="show4" type="button">重新排序</button>
+                    </div>
+                    <div class="form-group">
+                        <label>类型选择</label>
+                        <button id="show1" type="button">商店类型</button>
+                        <button id="show2" type="button">图片任务</button>
+                        <button id="show3" type="button">文本任务</button>
+                        <button id="show5" type="button">copy任务</button>
+                    </div>
+                    <div class ="all" style="display:none;">
+                    <div class="form-group">
+                        <div class="div1">
+                            <input type="text" class ="image-title" name="image_title" {eq name="edit" value="true"} value="{$data.image_title}"{/eq}>
+                            <input type="text" class ="image-subtitle" name="image_subtitle" {eq name="edit" value="true"} value="{$data.image_subtitle}"{/eq}>
+                            <input type="text" class ="caption" name="caption" {eq name="edit" value="true"} value="{$data.caption}"{/eq}>
+                            <input type="text" class ="subcaption" name="subcaption" {eq name="edit" value="true"} value="{$data.subcaption}"{/eq}>
+                            <input type="text" class ="secondary-subcaption" name="secondary_subcaption" {eq name="edit" value="true"} value="{$data.secondary_subcaption}"{/eq}>
+                            <input type="text" class ="tertiary-subcaption" name="tertiary_subcaption" {eq name="edit" value="true"} value="{$data.tertiary_subcaption}"{/eq}>
+                            <input type="text" class ="appid" name="appid" placeholder="appid必填" {eq name="edit" value="true"} value="{$data.appid}"{/eq}>
+                            <input type="text" class ="appname" name="appname" placeholder="appname必填" {eq name="edit" value="true"} value="{$data.appname}"{/eq}>
+                            <input type="text" class ="smsTitle" name="smsTitle" placeholder="请输入smsTitle" {eq name="edit" value="true"} value="{$data.smsTitle}"{/eq}>
+                        </div>
+                        <div class="div2">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>上传图片</label><br>
+                        <input type="file" name="image" /> <br>
+                    </div>
+                 </div>
+                <div class ="two" style="display:none;">
+                    <div class="form-group">
+                        <label>图片</label>
+                        <label>上传图片</label><br>
+                        <input type="file" name="pic" /> <br>
+                    </div>
+                </div>
+                <div class ="three" style="display:none;">
+                    <div class="form-group">
+                        <label>文本内容</label>
+                        <textarea class="form-control" id="tmessage" name="tmessage" rows="3" placeholder="输入要发送的文本内容 ...">{eq name="edit" value="true"}{$data.tmessage}{/eq}</textarea>
+                    </div>
+                </div>
+                <div class ="five" style="display:none;">
+                    <div class="form-group">
+                        <label>请输入要复制的任务id</label>
+                        <input type="text" class="form-control" id="mid" name="mid" placeholder="输入要复制的任务id"{eq name="edit" value="true"} value="{$data.mid}"{/eq}>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>任务名称</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="输入要任务名字"{eq name="edit" value="true"} value="{$data.name}"{/eq}>
+                </div>
+                <div class="form-group">
+                    <label>发送内容</label>
+                    <textarea class="form-control" id="content" name="content" rows="3" placeholder="输入要发送的内容 ...">{eq name="edit" value="true"}{$data.content}{/eq}</textarea>
+                </div>
+				<div class="form-group">
+                    <label>发送内容明文</label>
+                    <textarea class="form-control" id="content_"  rows="3" placeholder="输入要发送的内容 ..."></textarea>
+                  </div>
+				  <div class="form-group">
+						<label>最大同时运行设备数</label>
+						<div class="col-sm-2">
+							<div class="input-group">
+								<input style="width: 100px; text-align: center;" type="text" id="machinenum" name="machinenum" value="{eq name="edit" value="true"}{$data.machinenum}{else/}10{/eq}" class="form-control machinenum " placeholder="输入数量">
+							</div>
+						</div>
+				</div>
+				 <div class="form-group">
+						<label>单次分发最大账户数</label>
+						<div class="col-sm-2">
+							<div class="input-group">
+								<input style="width: 100px; text-align: center;" type="text" id="num" name="num" value="{eq name="edit" value="true"}{$data.num}{else/}30{/eq}" class="form-control num" placeholder="输入数量">
+							</div>
+						</div>
+				</div>
+				 <div class="form-group">
+						<label>目标发送数</label>
+						<div class="col-sm-2">
+							<div class="input-group">
+								<input style="width: 100px; text-align: center;" type="text" id="sendmaxnum" name="sendmaxnum" value="{eq name="edit" value="true"}{$data.sendmaxnum}{else/}10000{/eq}" class="form-control sendmaxnum" placeholder="输入数量">
+							</div>
+						</div>
+				</div>
+				<div class="form-group">
+                    <label>状态</label>
+                    <select class="form-control" name="status">
+						{foreach name="statuslable" item="vo" }
+						<option value="{$key}" {eq name="edit" value="true"}{eq name="data.status" value="$key"}selected{/eq}{/eq}>{$vo}</option>
+					{/foreach}
+                    </select>
+                  </div>
+                <div class="form-group">
+                  <label>
+                    <input type="radio" name="r1" class="minimal" onclick="javascript:empytsendlist()" {empty name="data.sendlist"}checked{/empty}>
+					内置收件人
+                  </label>
+                  <label>
+                   <input type="radio" name="r1" class="minimal" onclick="javascript:initLayer()" {notempty name="data.sendlist"}checked{/notempty}>
+					上传收件人
+                  </label>
+                </div>
+				 <div class="form-group">
+					<label for="enable" class="col-sm-2 control-label">启用</label>
+					<div class="col-sm-8">
+						<input type="checkbox" class="enable la_checkbox" {eq name="edit" value="true"}{neq name="data.status" value="2"}checked{/neq}{else}checked{/eq}/>
+						<input type="hidden" class="enable" name="enable" value="{eq name="edit" value="true"}{eq name="data.status" value="2"}0{else}1{/eq}{else}1{/eq}" />
+					</div>
+				</div>
+				  <div class="form-group">
+                    <label>添加时间：{eq name="edit" value="true"}{$data.intime|gettime}{else/}{php}echo gettime(time());{/php}{/eq}</label>
+                  </div>
+				 </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">提交</button>
+                </div>
+              </form>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <script language="javascript" src="/static/admin/plugins/jquery/jquery.base64.js"></script>
+   <script data-exec-on-popstate>
+  $.base64.utf8encode = true;
+	content_val = $("#content").val()
+      if(content_val != ""){
+		$("#content_").val($.base64.atob(content_val, true));
+      }
+    $(function () {
+	$('.machinenum:not(.initialized)')
+    .addClass('initialized')
+    .bootstrapNumber({
+        upClass: 'success',
+        downClass: 'primary',
+        center: true
+    });
+	
+	$('.num:not(.initialized)')
+    .addClass('initialized')
+    .bootstrapNumber({
+        upClass: 'success',
+        downClass: 'primary',
+        center: true
+    });
+	
+	$('.sendmaxnum:not(.initialized)')
+    .addClass('initialized')
+    .bootstrapNumber({
+        upClass: 'success',
+        downClass: 'primary',
+        center: true
+    });
+		$('.enable.la_checkbox').bootstrapSwitch({
+			size:'small',
+			onText: '启用',
+			offText: '禁用',
+			onColor: 'success',
+			offColor: 'danger',
+			onSwitchChange: function(event, state) {
+				$('.enable').val(state ? '1' : '0').change();
+			}
+		});
+	$('#content').bind('input propertychange', function(){
+       content_val = $("#content").val()
+      if(content_val != ""){
+		$("#content_").val($.base64.atob(content_val, true));
+      }else{
+        
+      };
+    });
+	$('#content_').bind('input propertychange', function(){
+	   content_val = $("#content_").val()
+      if(content_val != ""){
+		$("#content").val($.base64.btoa(content_val, true));
+      }else{
+        
+      };
+    });
+    });
+</script>
+  <script>
+      $('#show1').click(function () {
+       var record = $('#record').val();
+       if(record.indexOf("1")==-1){
+          //等于-1 表示不存在字符串中
+           record =record+'1';
+           $("#record").attr("value",record);
+           document.getElementById('sel').innerHTML=record;
+       }
+          $('.all').show();
+          $('.two').hide();
+          $('.five').hide();
+          $('.three').hide();
+      });
+      $('#show2').click(function () {
+          var record = $('#record').val();
+
+          if(record.indexOf("2")==-1){
+              record =record+'2';
+              $("#record").attr("value",record);
+              document.getElementById('sel').innerHTML=record;
+          }
+          $('.two').show();
+          $('.all').hide();
+          $('.five').hide();
+          $('.three').hide();
+      });
+      $('#show3').click(function () {
+          var record = $('#record').val();
+          if(record.indexOf("3")==-1){
+              record =record+'3';
+              $("#record").attr("value",record);
+              document.getElementById('sel').innerHTML=record;
+          }
+          $('.two').hide();
+          $('.all').hide();
+          $('.five').hide();
+          $('.three').show();
+      });
+      $('#show4').click(function () {
+          var record = '';
+              $("#record").attr("value",record);
+              document.getElementById('sel').innerHTML=record;
+          $('.two').hide();
+          $('.all').hide();
+          $('.three').hide();
+          $('.five').hide();
+      });
+      $('#show5').click(function () {
+          var record = '';
+          $("#record").attr("value",record);
+          document.getElementById('sel').innerHTML='';
+          $('.two').hide();
+          $('.all').hide();
+          $('.three').hide();
+          $('.five').show();
+      });
+
+
+  </script>
+  <!-- /.content-wrapper -->
+  {include file="admin/footer" /}
+

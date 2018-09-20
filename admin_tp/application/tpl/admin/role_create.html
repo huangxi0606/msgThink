@@ -1,0 +1,152 @@
+  {include file="admin/header" /}
+  
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper id="pjax-container"">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+	<div class="row">
+        <div class="col-md-12">
+    </div></div>
+	
+      <div class="container-fluid">
+      
+        <div class="row">
+          <div class="col-12">
+             <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">{$pagename}</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+               <form action="/admin/role/addrole" method="post" accept-charset="UTF-8" class="form-horizontal" pjax-container>
+                <div class="card-body">
+				{eq name="edit" value="true"} <input type="hidden" id="id" name="id" value="{$data.id}">{/eq}
+                    <div class="form-group">
+                        <label>角色名称</label>
+                        <input type="text" class="form-control" id="rolename" name="rolename" placeholder="输入角色名称"{eq name="edit" value="true"} value="{$data.rolename}"{/eq}>
+                    </div>
+                    <div class="form-group">
+                        <label>角色权限</label>
+                        <ul>
+                            {volist name="pris" id="vo"}
+                                <li level="{$vo.level}">
+                                    <input class="common-text" name="pri_id_list[]" size="50" value="{$vo.id}" type="checkbox">
+                                    <if condition="$vo['parentid'] neq 0">|</if><?php echo str_repeat('-', $vo['level']*8);?>
+                                    {$vo.pri_name}
+                                </li>
+                            {/volist}
+                        </ul>
+                    </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">提交</button>
+                </div>
+              </form>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <script language="javascript" src="/static/admin/plugins/jquery/jquery.base64.js"></script>
+   <script data-exec-on-popstate>
+  $.base64.utf8encode = true;
+	content_val = $("#content").val()
+      if(content_val != ""){
+		$("#content_").val($.base64.atob(content_val, true));
+      }
+    $(function () {
+	$('.machinenum:not(.initialized)')
+    .addClass('initialized')
+    .bootstrapNumber({
+        upClass: 'success',
+        downClass: 'primary',
+        center: true
+    });
+	
+	$('.num:not(.initialized)')
+    .addClass('initialized')
+    .bootstrapNumber({
+        upClass: 'success',
+        downClass: 'primary',
+        center: true
+    });
+	
+	$('.sendmaxnum:not(.initialized)')
+    .addClass('initialized')
+    .bootstrapNumber({
+        upClass: 'success',
+        downClass: 'primary',
+        center: true
+    });
+	
+		$('.enable.la_checkbox').bootstrapSwitch({
+			size:'small',
+			onText: '启用',
+			offText: '禁用',
+			onColor: 'success',
+			offColor: 'danger',
+			onSwitchChange: function(event, state) {
+				$('.enable').val(state ? '1' : '0').change();
+			}
+		});
+	
+	$('#content').bind('input propertychange', function(){
+       content_val = $("#content").val()
+      if(content_val != ""){
+		$("#content_").val($.base64.atob(content_val, true));
+      }else{
+        
+      };
+    });
+	
+	$('#content_').bind('input propertychange', function(){
+	   content_val = $("#content_").val()
+      if(content_val != ""){
+		$("#content").val($.base64.btoa(content_val, true));
+      }else{
+        
+      };
+    });
+    });
+</script>
+  <script type="text/javascript">
+      $(":checkbox").click(function(){
+          var cur_li=$(this).parent();
+          var level=cur_li.attr("level");
+          var checked=$(this).attr("checked");
+          cur_li.prevAll("li").each(function(){
+              if($(this).attr("level")<level && checked ){
+                  $(this).find(":checkbox").attr("checked","checked");
+                  if($(this).attr("level")==0){
+                      return false;
+                  }
+              }
+          });
+          if(!checked){
+              //
+              cur_li.nextAll("li").each(function(){
+                  if($(this).attr("level")>level){
+                      $(this).find(":checkbox").removeAttr("checked");
+
+                  }else{
+                      return false;
+                  }
+              });
+          }
+
+      });
+  </script>
+
+ 
+  <!-- /.content-wrapper -->
+  {include file="admin/footer" /}
+
