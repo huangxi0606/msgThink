@@ -9,6 +9,7 @@ class Login extends Controller
 {
     public function index()
     {
+//        var_dump('369');exit;
         return $this->fetch('admin/login');
     }
 	public function check()

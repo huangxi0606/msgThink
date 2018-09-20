@@ -1,0 +1,112 @@
+    <!-- Content Header (Page header) -->
+
+    <section class="content-header">
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="online">
+            <p>在线</p>
+        </div>
+        <div class="onout"></div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+				<div class="btn-group pull-right" style="margin-right: 10px">
+					</div>
+				   <span>
+            <input type="checkbox" class="grid-select-all" />&nbsp;
+				<div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-default">操作</button>
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                          </button>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">删除</a>
+                          </div>
+                        </div>
+                      </div>
+		 <a class="btn btn-sm btn-primary  btn-grid-refresh" style="color:white;"><i class="fa fa-refresh"></i> 刷新</a>
+        </span>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover">
+                  <tr>
+				  <th> </th>
+                    <th>ID<a class="fa fa-fw fa-sort{eq name='_sort.column' value='id'}{eq name='_sort.sort' value='true'}-amount-{$_sort.type}{/eq}{/eq}" href="/admin/machine/index/task?_sort%5Bcolumn%5D=id&_sort%5Btype%5D={eq name='_sort.column' value='id'}{eq name='_sort.type' value='asc'}desc{else}asc{/eq}{else}asc{/eq}"></a></th>
+                    <th>机器名字</th>
+                    <th>密码</th>
+					<th>使用次数</th>
+                    <th>当前阶段</th>
+                    <th>最后活跃时间<a class="fa fa-fw fa-sort{eq name='_sort.column' value='uptime'}{eq name='_sort.sort' value='true'}-amount-{$_sort.type}{/eq}{/eq}" href="/admin/machine/index/task?_sort%5Bcolumn%5D=uptime&_sort%5Btype%5D={eq name='_sort.column' value='uptime'}{eq name='_sort.type' value='asc'}desc{else}asc{/eq}{else}asc{/eq}"></a></th>
+                    <th>状态<a class="fa fa-fw fa-sort{eq name='_sort.column' value='status'}{eq name='_sort.sort' value='true'}-amount-{$_sort.type}{/eq}{/eq}" href="/admin/machine/index/task?_sort%5Bcolumn%5D=status&_sort%5Btype%5D={eq name='_sort.column' value='status'}{eq name='_sort.type' value='asc'}desc{else}asc{/eq}{else}asc{/eq}"></a></th>
+                  </tr>
+				  {volist name="data" id="vo"}
+					  <tr>
+					   <td><input type="checkbox" class="grid-row-checkbox" data-id="{$vo.id}" /></td>
+						<td>{$vo.id}</td>
+						<td>{$vo.name}</td>
+						<td>{$vo.num}</td>
+						<td>{$vo.level}</td>
+						<td>{$vo.uptime|getTime}</td>
+						<td><span class="label label-{switch name="vo.status"}{case value="1"}success{/case}{case value="2|3"}danger{/case}{case value="0"}info{/case}{default /}default{/switch} badge">{php}echo $statuslable[$vo['status']];{/php}</span></td>
+					  </tr>
+					{/volist}
+                </table>
+              </div>
+			  <div class="box-footer clearfix">
+					<span class="p-3">从 <b>1</b> 到 <b>20</b> ，总共 <b>{$count}</b> 条</span>
+					 {$page}
+<script data-exec-on-popstate>
+
+ $(function () {
+            
+    $('.grid-row-checkbox').iCheck({checkboxClass:'icheckbox_minimal-blue'}).on('ifChanged', function () {
+    if (this.checked) {
+        $(this).closest('tr').css('background-color', '#ffffd5');
+    } else {
+        $(this).closest('tr').css('background-color', '');
+    }
+});
+
+$('.grid-select-all').iCheck({checkboxClass:'icheckbox_minimal-blue'});
+
+$('.grid-select-all').on('ifChanged', function(event) {
+    if (this.checked) {
+        $('.grid-row-checkbox').iCheck('check');
+    } else {
+        $('.grid-row-checkbox').iCheck('uncheck');
+    }
+});
+
+var selectedRows = function () {
+    var selected = [];
+    $('.grid-row-checkbox:checked').each(function(){
+        selected.push($(this).data('id'));
+    });
+
+    return selected;
+}
+
+
+
+$('.btn-grid-refresh').on('click', function() {
+    $.pjax.reload('#pjax-container');
+    toastr.success('刷新成功 !');
+});
+
+  });
+</script>
+
+				</div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->

@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f6ac0bc5-0219-460c-b00c-8f528ffa2325" name="Default" comment="" />
+    <list default="true" id="f6ac0bc5-0219-460c-b00c-8f528ffa2325" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin_tp/application/admin/controller/Machine.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin_tp/application/tpl/admin/machine.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin_tp/application/tpl/admin/machine_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_tp/application/admin/controller/Login.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin_tp/application/admin/controller/Login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_tp/application/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin_tp/application/config.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_tp/application/tpl/admin/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin_tp/application/tpl/admin/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/redis.php" beforeDir="false" afterPath="$PROJECT_DIR$/core/redis.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tool/hhx.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tool/key.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tool/putRedis.php" beforeDir="false" afterPath="$PROJECT_DIR$/tool/putRedis.php" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,29 +27,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="redis.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="api.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="405">
+              <caret line="15" column="26" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="redis.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/redis.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="2" column="37" selection-start-line="2" selection-start-column="37" selection-end-line="2" selection-end-column="37" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="putRedis.cmd" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tool/putRedis.cmd">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="81">
-              <caret line="3" selection-start-line="3" selection-end-line="3" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Medoo.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tool/Medoo.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1404">
-              <caret line="61" column="9" selection-start-line="61" selection-start-column="9" selection-end-line="61" selection-end-column="9" />
+            <state relative-caret-position="486">
+              <caret line="51" column="31" lean-forward="true" selection-start-line="51" selection-start-column="31" selection-end-line="51" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -44,44 +48,8 @@
       <file leaf-file-name="putRedis.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tool/putRedis.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="279">
-              <caret line="280" column="65" selection-start-line="280" selection-start-column="65" selection-end-line="280" selection-end-column="65" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="core.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tool/core.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="447">
-              <caret line="83" column="152" selection-start-line="83" selection-start-column="152" selection-end-line="83" selection-end-column="152" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="database.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/admin_tp/application/database.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
-              <caret line="21" column="42" selection-start-line="21" selection-start-column="42" selection-end-line="21" selection-end-column="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="machine_l.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tool/machine_l.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="8" selection-start-column="8" selection-end-column="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="api.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/api.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="15" column="26" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
+            <state relative-caret-position="365">
+              <caret line="341" column="63" selection-start-line="341" selection-start-column="63" selection-end-line="341" selection-end-column="63" />
             </state>
           </provider>
         </entry>
@@ -97,10 +65,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>database</find>
-      <find>page</find>
-      <find>pris</find>
-      <find>sendlist</find>
       <find>datemd5</find>
       <find>account</find>
       <find>268435456</find>
@@ -127,12 +91,19 @@
       <find>image-info</find>
       <find>up</find>
       <find>root</find>
+      <find>status</find>
+      <find>HMSET</find>
+      <find>serial</find>
+      <find>MsgTaskList_</find>
     </findStrings>
     <dirStrings>
       <dir>D:\wroot\admin_tp</dir>
       <dir>D:\wroot\admin_tp\application</dir>
       <dir>D:\wroot</dir>
     </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -168,10 +139,7 @@
         <option value="$PROJECT_DIR$/admin_tp/application/tpl/admin/device_list.html" />
         <option value="$PROJECT_DIR$/admin_tp/application/tpl/admin/addressee_list.html" />
         <option value="$PROJECT_DIR$/admin_tp/application/tpl/admin/msgtask_list.html" />
-        <option value="$PROJECT_DIR$/admin_tp/application/admin/controller/Login.php" />
         <option value="$PROJECT_DIR$/admin_tp/public/static/ajax/js/upload.js" />
-        <option value="$PROJECT_DIR$/admin_tp/application/tpl/admin/header.html" />
-        <option value="$PROJECT_DIR$/admin_tp/application/config.php" />
         <option value="$PROJECT_DIR$/admin_tp/public/static/ajax/js/zupload.js" />
         <option value="$PROJECT_DIR$/api.php" />
         <option value="$PROJECT_DIR$/admin_tp/application/tpl/admin/account_create.html" />
@@ -180,10 +148,16 @@
         <option value="$PROJECT_DIR$/admin_tp/application/tpl/admin/msgtask_create.html" />
         <option value="$PROJECT_DIR$/admin_tp/application/admin/controller/Sysconfig.php" />
         <option value="$PROJECT_DIR$/tool/machine_list.txt" />
-        <option value="$PROJECT_DIR$/core/redis.php" />
-        <option value="$PROJECT_DIR$/tool/putRedis.php" />
         <option value="$PROJECT_DIR$/tool/core.php" />
         <option value="$PROJECT_DIR$/admin_tp/application/database.php" />
+        <option value="$PROJECT_DIR$/admin_tp/application/tpl/admin/machine.html" />
+        <option value="$PROJECT_DIR$/admin_tp/application/config.php" />
+        <option value="$PROJECT_DIR$/admin_tp/application/admin/controller/Login.php" />
+        <option value="$PROJECT_DIR$/admin_tp/application/admin/controller/Machine.php" />
+        <option value="$PROJECT_DIR$/admin_tp/application/tpl/admin/header.html" />
+        <option value="$PROJECT_DIR$/admin_tp/application/tpl/admin/machine_list.html" />
+        <option value="$PROJECT_DIR$/tool/putRedis.php" />
+        <option value="$PROJECT_DIR$/core/redis.php" />
       </list>
     </option>
   </component>
@@ -215,12 +189,12 @@
     <option name="width" value="1680" />
     <option name="height" value="901" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -231,28 +205,13 @@
             <path>
               <item name="wroot" type="b2602c69:ProjectViewProjectNode" />
               <item name="wroot" type="462c0819:PsiDirectoryNode" />
-              <item name="admin_tp" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="wroot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="wroot" type="462c0819:PsiDirectoryNode" />
-              <item name="admin_tp" type="462c0819:PsiDirectoryNode" />
-              <item name="application" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="wroot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="wroot" type="462c0819:PsiDirectoryNode" />
-              <item name="core" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="wroot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="wroot" type="462c0819:PsiDirectoryNode" />
               <item name="tool" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -308,25 +267,29 @@
       <workItem from="1537238445325" duration="7493000" />
       <workItem from="1537341165495" duration="963000" />
       <workItem from="1537411245692" duration="2012000" />
+      <workItem from="1537415216098" duration="2719000" />
+      <workItem from="1537426483389" duration="9401000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="185416000" />
+    <option name="totallyTimeSpent" value="197536000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13965885" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.18736383" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16364606" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -335,7 +298,6 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -366,27 +328,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/api.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="621">
-          <caret line="23" column="24" lean-forward="true" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tool/putRedis.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9882">
-          <caret line="369" column="1" selection-start-line="369" selection-start-column="1" selection-end-line="369" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_tp/application/admin/controller/Index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="16" column="41" selection-start-line="16" selection-start-column="41" selection-end-line="16" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/admin_tp/application/admin/controller/Privilege.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2322">
@@ -405,13 +346,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="243">
           <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tool/hhx.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="38" lean-forward="true" selection-start-column="38" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -560,13 +494,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_tp/application/admin/controller/Login.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
-          <caret line="36" column="5" selection-start-line="36" selection-start-column="5" selection-end-line="36" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/admin_tp/application/admin/controller/Admin.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-131">
@@ -582,13 +509,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_tp/application/tpl/admin/header.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="783">
-          <caret line="29" column="60" selection-start-line="29" selection-start-column="60" selection-end-line="29" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/admin_tp/application/admin/controller/Account.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3024">
@@ -600,13 +520,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="1" selection-start-column="1" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_tp/application/config.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="21" column="36" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="36" />
         </state>
       </provider>
     </entry>
@@ -680,30 +593,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="15" column="26" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/redis.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="2" column="37" selection-start-line="2" selection-start-column="37" selection-end-line="2" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tool/putRedis.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="280" column="65" selection-start-line="280" selection-start-column="65" selection-end-line="280" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tool/core.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="447">
+        <state relative-caret-position="2241">
           <caret line="83" column="152" selection-start-line="83" selection-start-column="152" selection-end-line="83" selection-end-column="152" />
         </state>
       </provider>
@@ -712,6 +604,79 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="351">
           <caret line="21" column="42" selection-start-line="21" selection-start-column="42" selection-end-line="21" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_tp/application/config.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="23" column="36" selection-start-line="23" selection-start-column="36" selection-end-line="23" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_tp/application/tpl/admin/machine.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="6" column="33" lean-forward="true" selection-start-line="6" selection-start-column="33" selection-end-line="6" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_tp/application/admin/controller/Login.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_tp/application/admin/controller/Machine.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="73" selection-start-line="18" selection-start-column="73" selection-end-line="18" selection-end-column="73" />
+          <folding>
+            <element signature="e#39#60#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_tp/application/tpl/admin/header.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="702">
+          <caret line="53" column="94" selection-start-line="53" selection-start-column="94" selection-end-line="53" selection-end-column="94" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_tp/application/tpl/admin/machine_list.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1930">
+          <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tool/hhx.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="38" lean-forward="true" selection-start-column="38" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="15" column="26" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tool/putRedis.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="365">
+          <caret line="341" column="63" selection-start-line="341" selection-start-column="63" selection-end-line="341" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/redis.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="51" column="31" lean-forward="true" selection-start-line="51" selection-start-column="31" selection-end-line="51" selection-end-column="31" />
         </state>
       </provider>
     </entry>

@@ -188,7 +188,6 @@ if($runtype==2 || $runtype==0){
 }
 /*********************************************************************************************************/
 if($runtype==3 || $runtype==0){
-
 	//回更收件人状态
 	$ListName='replyMsgTask';
 	$all_num=$xyredis->llen($ListName);
@@ -332,45 +331,47 @@ if($runtype==4 || $runtype==0){
 }
 /*********************************************************************************************************/
 //机器状态 09.18
-if($runtype==5 || $runtype==0)
-    $machine_list=array();$machine_key=array();
-$all_num=$xyredis->llen($ListName);
-if(intval($all_num)>0){
-    for($d_i=0;$d_i<$all_num;$d_i++){
-        $val_str=$xyredis->blpop($ListName,1);
-        if($val_str){
-            $machine=unserialize($val_str[1]);
-            //h 过滤重复$machine_key 是列表 如果不在 就加入
-            if(!in_array($machine['machine'],$machine_key)){
-                $machine_key[]=$machine['machine'];
-            }
-            $machine_list[$machine['machine']][]=$machine['id'];
-        }
+if($runtype==5 || $runtype==0){
+    $num =$xyredis->sCard("machine_add");
+    for ($x=0; $x<=$num; $x++) {
+       $key= $xyredis->spop("machine_add");
+       $data =$xyredis->hGetAll("machine:".$key);
+       $data_up  = $database->select("machine", ["name"], ["name[=]" => $data['name']]);
+        $logg = [];
+       if($data_up['name']){
+           $database->update('machine',['status'=>$data['status'],'uptime'=>time(),'level'=>$data['level'],'num'=>$data['num']], ["name[=]" => $data['name']]);
+       }else{
+           $logg[] = $data;
+//           $database->insert("machine",$data);
+//
+       }
     }
-    //var_dump($machine_key);
-    foreach($machine_key as $key){
-        $machine_up=array();
-        foreach($machine_list[$key] as $val){
-            $machine_up[]=$val;
-        }
-        $data_up = $database->update($table, ["count[+]" => 1,"machine"=> $key,'uptime'=>time()], ["id" => $machine_up]);
-        //ninie更新  09.18
-        //如果状态存在 就存在 不存在就默认为0 查找数据表是否存在 不存在添加  存在更新
-        //$nine=update("nine",, ["status" => 更新为值], ["name" => $machine]);
-
-        $errType=$database->error();
-        if($errType[1]>0){ //更新错误，放回内存
-            echo '['.$name.']error:'.implode('_',$errType).'<br/>';
-            setmsg($logfile,'['.$name.']error:'.implode('_',$errType));
-            foreach($machine_list[$key] as $val){
-                $xyredis->rpush($ListName,serialize(array('id'=>$val,'machine'=>$key)));
-            }
+    //分块添加
+    $logg = array_chunk($logg,100);
+    foreach ($logg as $item){
+        $database->insert("machine",$item);
+    }
+}
+/*********************************************************************************************************/
+//机器状态 09.20 超时时间
+if($runtype==6 || $runtype==0){
+    $nowTime =time();
+    $data_up  = $database->select("machine", ["name","uptime","status"], ["status[=]" => 0]);
+    foreach ($data_up as $item){
+        if($nowTime-$item['uptime']>60*60*10){
+            $database->update('machine',['status'=>1], ["name[=]" => $item['name']]);
         }
     }
 }
-    /*********************************************************************************************************/
-
-
+/*********************************************************************************************************/
+//机器状态 09.20 零点更新次数为0
+if($runtype==7 || $runtype==0){
+    $keys = $xyredis->keys("machine:*");
+    foreach ($keys as $key){
+        $xyredis->hSet($key,'num',0);
+    }
+}
+/*********************************************************************************************************/
 $xyredis->close();
 exit();
 ?>

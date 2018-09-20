@@ -42,19 +42,17 @@ function getDevice($Info){
 //        $MachineInfo['status']=$Info['status'];
 		$xyredis->lpush('DeviceList_machine',serialize($MachineInfo));
 	}
-	//无如果为9加入到一个列表  其他加入到一个列表中
     if(intval($Info['status'])==9){
 	    $machinenine =array();
-	    $machinenine['machine'] =$Info['machine'];
-        $machinenine['status'] =$Info['status'];
-        $machinenine['time'] =time();
-        $xyredis->lpush('machine_nine',serialize($machinenine));
-    }else{
-        $machinenine =array();
-        $machinenine['machine'] =$Info['machine'];
-        $machinenine['status'] =$Info['status'];
-        $machinenine['time'] =time();
-        $xyredis->lpush('machine_one',serialize($machinenine));
+	    $machinenine['name'] =$Info['machine'];
+	    //0为在线。
+        $machinenine['status'] =0;
+        $machinenine['uptime'] =time();
+        $machinenine['level'] =1;
+        $machinenine['num'] =0;
+        $key ="machine:".$machinenine['name'];
+        $xyredis->HMSET($key,$machinenine);
+        $xyredis->sAdd("machine_add",$machinenine['name']);
     }
 	$xyredis->close();
 	return $DeviceInfo;
@@ -76,8 +74,18 @@ function replyDevice($Info){
 	$DeviceInfo['Record_at']=$Info['Record'];
 	//$DeviceInfo['FairPlayKeyData']=urlencode($Info['FairPlayKeyData']);
 	 $DeviceInfo['FairPlayKeyData']=$Info['FairPlayKeyData'];
-
 	$xyredis->lpush('replyDevice',serialize($DeviceInfo));
+	//09.20增加
+    //0为在线。
+    $key ="machine:".$Info['machine'];
+    $xyredis->hSet($key,'uptime',time());
+    $xyredis->hSet($key,'status',0);
+    $xyredis->hSet($key,'level',2);
+//    $is =$xyredis->sIsMember("machine_add",$Info['machine']['machine']);
+//    if($is<1){
+    //无需判断 如果已有不会添加
+        $xyredis->sAdd("machine_add",$Info['machine']);
+//    }
 	$xyredis->close();
 	return $DeviceInfo['FairPlayKeyData'];
 }
@@ -103,6 +111,17 @@ function getAccount($Info){
 		$MachineInfo['machine']=$Info['machine'];
 		$xyredis->lpush('AccountList_machine',serialize($MachineInfo));
 	}
+    //09.20增加
+    //0为在线。
+    $key ="machine:".$Info['machine'];
+    $xyredis->hSet($key,'uptime',time());
+    $xyredis->hSet($key,'status',0);
+    $xyredis->hSet($key,'level',3);
+//    $is =$xyredis->sIsMember("machine_add",$Info['machine']['machine']);
+//    if($is<1){
+    //无需判断 如果已有不会添加
+    $xyredis->sAdd("machine_add",$Info['machine']);
+//    }
 	$xyredis->close();
 	return $AccountInfo;
 }
@@ -118,6 +137,18 @@ function replyAccount($Info){
 	$AccountInfo['record']=$Info['record'];
 	$AccountInfo['cert']=$Info['cert'];
 	$xyredis->lpush('replyAccount',serialize($AccountInfo));
+    //09.20增加
+    //0为在线。
+    $key ="machine:".$Info['machine'];
+    $xyredis->hSet($key,'uptime',time());
+    $xyredis->hSet($key,'status',0);
+    $xyredis->hSet($key,'level',4);
+
+//    $is =$xyredis->sIsMember("machine_add",$Info['machine']['machine']);
+//    if($is<1){
+    //无需判断 如果已有不会添加
+    $xyredis->sAdd("machine_add",$Info['machine']);
+//    }
 	$xyredis->close();
 }
 function getMsgTask($Info){
@@ -182,7 +213,17 @@ function getMsgTask($Info){
 			}
 		}
 	}
-	
+    //09.20增加
+    //0为在线。
+    $key ="machine:".$Info['machine'];
+    $xyredis->hSet($key,'uptime',time());
+    $xyredis->hSet($key,'status',0);
+    $xyredis->hSet($key,'level',5);
+//    $is =$xyredis->sIsMember("machine_add",$Info['machine']['machine']);
+//    if($is<1){
+    //无需判断 如果已有不会添加
+    $xyredis->sAdd("machine_add",$Info['machine']);
+//    }
 	$xyredis->close();
 	return $MsgTaskInfo;
 }
@@ -237,6 +278,18 @@ function replyMsgTask($Info){
 			$xyredis->HINCRBY($MsgTaskListName,'sendnum',$sendnum_c);//更新收件人发送成功数sendnum
 			$xyredis->HINCRBY($MsgTaskListName,'senderrnum',$senderrnum_c);//更新收件人发送成功数senderrnum
 			$xyredis->HMSET($MsgTaskListName,$MsgTaskInfo);
+            //09.20增加
+            //0为在线。
+            $key ="machine:".$data_arr['machine'];
+            $xyredis->hSet($key,'uptime',time());
+            $xyredis->hSet($key,'status',0);
+            $xyredis->hSet($key,'level',6);
+            $xyredis->HINCRBY($key,'num',$sendnum_c);
+//    $is =$xyredis->sIsMember("machine_add",$Info['machine']['machine']);
+//    if($is<1){
+            //无需判断 如果已有不会添加
+            $xyredis->sAdd("machine_add",$data_arr['machine']);
+//    }
 		}
 		$xyredis->close();
 	}
