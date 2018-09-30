@@ -188,6 +188,7 @@ if($runtype==2 || $runtype==0){
 }
 /*********************************************************************************************************/
 if($runtype==3 || $runtype==0){
+//    file_put_contents('i.txt',time());
 	//回更收件人状态
 	$ListName='replyMsgTask';
 	$all_num=$xyredis->llen($ListName);
@@ -332,33 +333,33 @@ if($runtype==4 || $runtype==0){
 /*********************************************************************************************************/
 //机器状态 09.18
 if($runtype==5 || $runtype==0){
+//    $data_up  = $database->select("machine",["name","status"], ["name[=]" => "003"]);
+//    var_dump($data_up[0]["name"]);exit;
     $num =$xyredis->sCard("machine_add");
-    for ($x=0; $x<=$num; $x++) {
+    for ($x=0; $x<$num; $x++) {
        $key= $xyredis->spop("machine_add");
        $data =$xyredis->hGetAll("machine:".$key);
-       $data_up  = $database->select("machine", ["name"], ["name[=]" => $data['name']]);
-        $logg = [];
-       if($data_up['name']){
-           $database->update('machine',['status'=>$data['status'],'uptime'=>time(),'level'=>$data['level'],'num'=>$data['num']], ["name[=]" => $data['name']]);
+       $data_up  = $database->select("machine", ["name","status"],["name[=]" => $data["name"]]);
+       if($data_up[0]["name"]){
+           $database->update('machine',['status'=>$data['status'],'uptime'=>$data['uptime'],'level'=>$data['level'],'num'=>$data['num']], ["name[=]" => $data['name']]);
        }else{
-           $logg[] = $data;
-//           $database->insert("machine",$data);
-//
+           $database->insert("machine",$data);
        }
     }
-    //分块添加
-    $logg = array_chunk($logg,100);
-    foreach ($logg as $item){
-        $database->insert("machine",$item);
-    }
+//    //分块添加
+//    $logg = array_chunk($logg,100);
+//    foreach ($logg as $item){
+//        $database->insert("machine",$item);
+//    }
 }
 /*********************************************************************************************************/
 //机器状态 09.20 超时时间
 if($runtype==6 || $runtype==0){
     $nowTime =time();
     $data_up  = $database->select("machine", ["name","uptime","status"], ["status[=]" => 0]);
+
     foreach ($data_up as $item){
-        if($nowTime-$item['uptime']>60*60*10){
+        if($nowTime-$item['uptime']>60*10){
             $database->update('machine',['status'=>1], ["name[=]" => $item['name']]);
         }
     }
@@ -370,7 +371,27 @@ if($runtype==7 || $runtype==0){
     foreach ($keys as $key){
         $xyredis->hSet($key,'num',0);
     }
+    $database->update('machine',['num'=>0]);
+    //当天使用的情况更新到数据库
+    $data['todayDe'] =$xyredis->sCard("todaydevice");
+    for ($i=1; $i<=$data['todayDe']; $i++)
+    {
+        $xyredis->spop("todaydevice");
+    }
+    $data['todayAc'] =$xyredis->sCard("todayaccount");
+    for ($i=1; $i<=$data['todayAc']; $i++)
+    {
+        $xyredis->spop("todayaccount");
+    }
+    //当天任务状况
+    $data['sucnum'] = $xyredis->HGET('todayMsg','succnum');
+    $data['errnum'] = $xyredis->HGET('todayMsg','errnum');
+    $xyredis->hset('todayMsg','succnum',0);
+    $xyredis->hset('todayMsg','errnum',0);
+    $data['uptime']=time();
+    $database->insert("today",$data);
 }
+
 /*********************************************************************************************************/
 $xyredis->close();
 exit();

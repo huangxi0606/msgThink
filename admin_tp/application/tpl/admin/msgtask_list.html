@@ -185,14 +185,12 @@ $('.grid-switch-enable').bootstrapSwitch({
 
 
  function rebuild() {
-     // console.log('ok');
      $.ajax({
          method: 'post',
          url: '/admin/msgtask/rebuild/',
          data: {
          },
          success: function (data) {
-             console.log(data);
              if (typeof data === 'object') {
                  if (data.status) {
                      swal(data.message, '', 'success');

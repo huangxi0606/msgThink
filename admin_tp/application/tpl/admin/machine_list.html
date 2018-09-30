@@ -5,9 +5,20 @@
     <!-- Main content -->
     <section class="content">
         <div class="online">
-            <p>在线</p>
+            <p style="font-size:30px;margin:64px 20px 20px 46px;font-weight: bold;color:white">在线:&nbsp;&nbsp;{$oncount}个</p>
+           <a href ="/admin/machine/index/serch/0">
+               <img src="/admin/images/down.png" style="width:40px;height:40px;margin-left: 90px;">
+               点击
+           </a>
         </div>
-        <div class="onout"></div>
+        <div class="onout">
+            <p style="font-size:30px;margin:64px 20px 20px 46px;font-weight: bold;color:white">离线:&nbsp;&nbsp;{$outcount}个</p>
+            <a href ="/admin/machine/index/serch/1">
+                <img src="/admin/images/down.png" style="width:40px;height:40px;margin-left: 90px;">
+                <!--<div class="outimg"></div>-->
+                点击
+            </a>
+        </div>
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
@@ -38,7 +49,6 @@
 				  <th> </th>
                     <th>ID<a class="fa fa-fw fa-sort{eq name='_sort.column' value='id'}{eq name='_sort.sort' value='true'}-amount-{$_sort.type}{/eq}{/eq}" href="/admin/machine/index/task?_sort%5Bcolumn%5D=id&_sort%5Btype%5D={eq name='_sort.column' value='id'}{eq name='_sort.type' value='asc'}desc{else}asc{/eq}{else}asc{/eq}"></a></th>
                     <th>机器名字</th>
-                    <th>密码</th>
 					<th>使用次数</th>
                     <th>当前阶段</th>
                     <th>最后活跃时间<a class="fa fa-fw fa-sort{eq name='_sort.column' value='uptime'}{eq name='_sort.sort' value='true'}-amount-{$_sort.type}{/eq}{/eq}" href="/admin/machine/index/task?_sort%5Bcolumn%5D=uptime&_sort%5Btype%5D={eq name='_sort.column' value='uptime'}{eq name='_sort.type' value='asc'}desc{else}asc{/eq}{else}asc{/eq}"></a></th>
@@ -50,7 +60,15 @@
 						<td>{$vo.id}</td>
 						<td>{$vo.name}</td>
 						<td>{$vo.num}</td>
-						<td>{$vo.level}</td>
+                          <td>{if condition="($vo.level == 1) "} 取设备码
+                              {elseif condition="$vo.level eq 2"/}回执设备码
+                              {elseif condition="$vo.level eq 3"/}取账号
+                              {elseif condition="$vo.level eq 4"/}回执账号
+                              {elseif condition="$vo.level eq 5"/}取任务
+                              {elseif condition="$vo.level eq 6"/}回执任务
+                              {else /} 出现错误
+                              {/if}</td>
+						<!--<td>{$vo.level}</td>-->
 						<td>{$vo.uptime|getTime}</td>
 						<td><span class="label label-{switch name="vo.status"}{case value="1"}success{/case}{case value="2|3"}danger{/case}{case value="0"}info{/case}{default /}default{/switch} badge">{php}echo $statuslable[$vo['status']];{/php}</span></td>
 					  </tr>
@@ -61,9 +79,7 @@
 					<span class="p-3">从 <b>1</b> 到 <b>20</b> ，总共 <b>{$count}</b> 条</span>
 					 {$page}
 <script data-exec-on-popstate>
-
  $(function () {
-            
     $('.grid-row-checkbox').iCheck({checkboxClass:'icheckbox_minimal-blue'}).on('ifChanged', function () {
     if (this.checked) {
         $(this).closest('tr').css('background-color', '#ffffd5');
@@ -71,9 +87,7 @@
         $(this).closest('tr').css('background-color', '');
     }
 });
-
 $('.grid-select-all').iCheck({checkboxClass:'icheckbox_minimal-blue'});
-
 $('.grid-select-all').on('ifChanged', function(event) {
     if (this.checked) {
         $('.grid-row-checkbox').iCheck('check');
@@ -81,7 +95,6 @@ $('.grid-select-all').on('ifChanged', function(event) {
         $('.grid-row-checkbox').iCheck('uncheck');
     }
 });
-
 var selectedRows = function () {
     var selected = [];
     $('.grid-row-checkbox:checked').each(function(){
@@ -90,8 +103,6 @@ var selectedRows = function () {
 
     return selected;
 }
-
-
 
 $('.btn-grid-refresh').on('click', function() {
     $.pjax.reload('#pjax-container');

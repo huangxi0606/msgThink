@@ -118,6 +118,16 @@ function get_redis($host='127.0.0.1',$port=6379){
 	//$redis->auth('myhotmoney');  
 	return $redis;
 }
+function getToday(){ // 动态获取当日Redis在线计数
+    $xyredis=get_redis();
+    $data['todayDe'] =$xyredis->sCard("todaydevice");
+    $data['todayAc'] =$xyredis->sCard("todayaccount");
+    $data['sucnum'] = $xyredis->HGET('todayMsg','succnum');
+    $data['errnum'] = $xyredis->HGET('todayMsg','errnum');
+    $data['uptime'] = time();
+    $xyredis->close();
+    return $data;
+}
 
 /**
  * 修改config的函数

@@ -1,0 +1,110 @@
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    </section>
+    <!-- Main content -->
+    <section class="content">
+	  <div class="row"><div class="col-md-12">
+    </div></div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+				   <span>
+            <input type="checkbox" class="grid-select-all" />&nbsp;
+				<div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-default">操作</button>
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                          </button>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">删除</a>
+                          </div>
+                        </div>
+                      </div>
+        </span>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover">
+                  <tr>
+				  <th> </th>
+                    <th>ID</th>
+                    <th>日期</th>
+                    <th>设备数</th>
+                    <th>账号数</th>
+					<th>任务成功量/失败</th>
+                  </tr>
+				  {volist name="data" id="vo"}
+					  <tr>
+					   <td><input type="checkbox" class="grid-row-checkbox" data-id="{$vo.id}" /></td>
+						<td>{$vo.id}</td>
+                        <td>{$vo.uptime|getTime}</td>
+						<td>{$vo.todayDe}</td>
+						<td>{$vo.todayAc}</td>
+						<td>{$vo.sucnum}/{$vo.errnum}</td>
+					  </tr>
+					{/volist}
+                </table>
+              </div>
+			  <div class="box-footer clearfix">
+					<span class="p-3">从 <b>1</b> 到 <b>20</b> ，总共 <b>{$count}</b> 条</span>
+					 {$page}
+
+<script data-exec-on-popstate>
+ $(function () {
+    $('.grid-row-checkbox').iCheck({checkboxClass:'icheckbox_minimal-blue'}).on('ifChanged', function () {
+    if (this.checked) {
+        $(this).closest('tr').css('background-color', '#ffffd5');
+    } else {
+        $(this).closest('tr').css('background-color', '');
+    }
+});
+$('.grid-select-all').iCheck({checkboxClass:'icheckbox_minimal-blue'});
+$('.grid-select-all').on('ifChanged', function(event) {
+    if (this.checked) {
+        $('.grid-row-checkbox').iCheck('check');
+    } else {
+        $('.grid-row-checkbox').iCheck('uncheck');
+    }
+});
+var selectedRows = function () {
+    var selected = [];
+    $('.grid-row-checkbox:checked').each(function(){
+        selected.push($(this).data('id'));
+    });
+    return selected;
+}
+$('.btn-grid-refresh').on('click', function() {
+    $.pjax.reload('#pjax-container');
+    toastr.success('刷新成功 !');
+});
+
+  });
+  
+ function trash() {
+        if (window.confirm("确认删除所有数据?")) {
+            $.ajax({
+                url: "/admin/account/trash",
+                success: function (data) {
+                    $.pjax.reload('#pjax-container');
+                    toastr.success(data.message);
+                },
+                error: function () {
+                    toastr.error('请求失败，请稍后再试');
+                }
+            });
+        }
+    }
+</script>
+
+				</div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->

@@ -32,7 +32,7 @@ class Login extends Controller
 			}
 
 		}
-		$this->success('请输入正确的登陆信息！', '/admin/Msgtask');
+		$this->success('', '/admin/Msgtask');
     }
 	public function logout()
     {

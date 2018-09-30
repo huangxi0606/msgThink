@@ -1,5 +1,6 @@
 <?php
 function getDevice($Info){
+
 	//xxxx/getDevice?machine=xxxx&ProductType=yyyy&status=z
 	//if(empty($Info['machine']) || empty($Info['ProductType']) || $Info['status']==''){
 	if(empty($Info['machine']) || $Info['status']==''){
@@ -26,22 +27,21 @@ function getDevice($Info){
 	}
 	*/
 	if((intval($Info['status'])==0 and $xyredis->get('opendevice')=='2') or (intval($Info['status'])==9 and !runMsgTask($xyredis))){
-		$xyredis->close();
+	    $xyredis->close();
 		return '';
 	}
-	//$ListName='DeviceList_'.$Info['ProductType'].'_'.$Info['status'];
 	$ListName='DeviceList_'.$Info['status'];
 	$val_str=$xyredis->blpop($ListName,1);
-	//var_dump($val_str);var_dump($ListName);
+
 	if($val_str){
 		$DeviceInfo=unserialize($val_str[1]);
 		$MachineInfo=array();
 		$MachineInfo['id']=$DeviceInfo['id'];
 		$MachineInfo['machine']=$Info['machine'];
-//		//增加0917 for nine
-//        $MachineInfo['status']=$Info['status'];
 		$xyredis->lpush('DeviceList_machine',serialize($MachineInfo));
 	}
+
+    /*********************************************************************************************************/
     if(intval($Info['status'])==9){
 	    $machinenine =array();
 	    $machinenine['name'] =$Info['machine'];
@@ -52,8 +52,9 @@ function getDevice($Info){
         $machinenine['num'] =0;
         $key ="machine:".$machinenine['name'];
         $xyredis->HMSET($key,$machinenine);
-        $xyredis->sAdd("machine_add",$machinenine['name']);
+        $xyredis->sAdd("machine_add",$Info['machine']);
     }
+    /*********************************************************************************************************/
 	$xyredis->close();
 	return $DeviceInfo;
 }
@@ -77,6 +78,7 @@ function replyDevice($Info){
 	$xyredis->lpush('replyDevice',serialize($DeviceInfo));
 	//09.20增加
     //0为在线。
+    /*********************************************************************************************************/
     $key ="machine:".$Info['machine'];
     $xyredis->hSet($key,'uptime',time());
     $xyredis->hSet($key,'status',0);
@@ -86,6 +88,7 @@ function replyDevice($Info){
     //无需判断 如果已有不会添加
         $xyredis->sAdd("machine_add",$Info['machine']);
 //    }
+    /*********************************************************************************************************/
 	$xyredis->close();
 	return $DeviceInfo['FairPlayKeyData'];
 }
@@ -113,6 +116,7 @@ function getAccount($Info){
 	}
     //09.20增加
     //0为在线。
+    /*********************************************************************************************************/
     $key ="machine:".$Info['machine'];
     $xyredis->hSet($key,'uptime',time());
     $xyredis->hSet($key,'status',0);
@@ -122,6 +126,7 @@ function getAccount($Info){
     //无需判断 如果已有不会添加
     $xyredis->sAdd("machine_add",$Info['machine']);
 //    }
+    /*********************************************************************************************************/
 	$xyredis->close();
 	return $AccountInfo;
 }
@@ -139,6 +144,7 @@ function replyAccount($Info){
 	$xyredis->lpush('replyAccount',serialize($AccountInfo));
     //09.20增加
     //0为在线。
+    /*********************************************************************************************************/
     $key ="machine:".$Info['machine'];
     $xyredis->hSet($key,'uptime',time());
     $xyredis->hSet($key,'status',0);
@@ -149,6 +155,7 @@ function replyAccount($Info){
     //无需判断 如果已有不会添加
     $xyredis->sAdd("machine_add",$Info['machine']);
 //    }
+    /*********************************************************************************************************/
 	$xyredis->close();
 }
 function getMsgTask($Info){
@@ -215,6 +222,7 @@ function getMsgTask($Info){
 	}
     //09.20增加
     //0为在线。
+    /*********************************************************************************************************/
     $key ="machine:".$Info['machine'];
     $xyredis->hSet($key,'uptime',time());
     $xyredis->hSet($key,'status',0);
@@ -224,14 +232,17 @@ function getMsgTask($Info){
     //无需判断 如果已有不会添加
     $xyredis->sAdd("machine_add",$Info['machine']);
 //    }
+    /*********************************************************************************************************/
 	$xyredis->close();
 	return $MsgTaskInfo;
 }
 function replyMsgTask($Info){
+
 	//{"email":"hds274doy@inbox.ru","serial":"F18P5NTVG5MF","addressee":[{"18286025889":"1"},{"18286025822":"2"},{"18286025822":"0"}],"machine":"P003","task_id":"5"}
 	if(empty($Info['data'])){
 		return '';
 	}
+
 	$data_arr=json_decode(base64_decode($Info['data']),1);
 	if(intval($data_arr['task_id'])>0){
 		$xyredis=get_redis();
@@ -240,7 +251,7 @@ function replyMsgTask($Info){
 			//$MsgTaskMachineName='MsgTaskMachine_'.$data_arr['task_id'];
 			//$xyredis->HSET($MsgTaskMachineName,$data_arr['machine'],time()); //更新活跃时间
 			$addressee_arr=$data_arr['addressee'];
-			$sendnum_c=0;$MsgTaskInfo=array();
+			$sendnum_c=$senderrnum_c=0;$MsgTaskInfo=array();
 			foreach($addressee_arr as $addressee=>$status){
 				$addressee = str_replace(array('mailto:','tel:'),'',$addressee);
 				$MsgTaskInfo['uptime']=time();
@@ -270,16 +281,25 @@ function replyMsgTask($Info){
 			if($sendnum >= $xyredis->HGET($MsgTaskListName,'sendmaxnum')){
 				$MsgTaskInfo['status']=3; //更新已完成
 				$MsgTaskInfo['oktime']=time();
-				$xyredis->HSET('MsgTaskList',$MsgTaskId,3);
+				$xyredis->HSET('MsgTaskList',$data_arr['task_id'],3);
 			}
 			if($sendnum_c>0){
 				$xyredis->HINCRBY('okDevice',$data_arr['serial'],$sendnum_c);//更新设备码成功数
 			}
+			//凌晨时间戳
+            $dawn =strtotime(date('Y-m-d'));
+			if(time()>$dawn){
+			    $xyredis->sAdd("todaydevice",$data_arr['serial']);
+			    $xyredis->sAdd("todayaccount",$data_arr['email']);
+                $xyredis->HINCRBY('todayMsg','succnum',$sendnum_c);//更新任务发送成功数
+                $xyredis->HINCRBY('todayMsg','errnum',$senderrnum_c);//更新任务发送失败数
+            }
 			$xyredis->HINCRBY($MsgTaskListName,'sendnum',$sendnum_c);//更新收件人发送成功数sendnum
-			$xyredis->HINCRBY($MsgTaskListName,'senderrnum',$senderrnum_c);//更新收件人发送成功数senderrnum
+			$xyredis->HINCRBY($MsgTaskListName,'senderrnum',$senderrnum_c);//更新收件人发送失败数senderrnum
 			$xyredis->HMSET($MsgTaskListName,$MsgTaskInfo);
             //09.20增加
             //0为在线。
+    /*********************************************************************************************************/
             $key ="machine:".$data_arr['machine'];
             $xyredis->hSet($key,'uptime',time());
             $xyredis->hSet($key,'status',0);
@@ -290,7 +310,9 @@ function replyMsgTask($Info){
             //无需判断 如果已有不会添加
             $xyredis->sAdd("machine_add",$data_arr['machine']);
 //    }
+            /*********************************************************************************************************/
 		}
+
 		$xyredis->close();
 	}
 }
@@ -301,7 +323,8 @@ function runMsgTask($xyredis){
 		if($status==1 || $status==5){
 			return true;
 		}
-	}/*
+	}
+	/*
 	$ListName='MsgTaskList';
 	$MsgTaskIds=$xyredis->HLEN($ListName);
 	if($MsgTaskIds>0){

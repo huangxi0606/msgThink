@@ -200,5 +200,15 @@ class Msgtask extends Common
             return $data;
         }
     }
+    public function rebuild(){
+        exec('D:\upupwn\PHP7\php.exe ../../tool/putRedis.php 3',$log, $status);
+//        var_dump($status);
+        if($status==0){
+            $retarr=array('status'=>true,'message'=>'操作成功');
+        }else{
+            $retarr=array('status'=>false,'message'=>'操作失败');
+        }
+        return $retarr;
+    }
 
 }

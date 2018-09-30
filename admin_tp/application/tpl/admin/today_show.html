@@ -1,0 +1,59 @@
+    <!-- Content Header (Page header) -->
+    {include file="admin/header" /}
+    <div class="content-wrapper" id="pjax-container">
+    <section class="content-header">
+    </section>
+    <!-- Main content -->
+    <section class="content">
+	  <div class="row"><div class="col-md-12">
+    </div></div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+				   <span>
+            <input type="checkbox" class="grid-select-all" />&nbsp;
+				<div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-default">操作</button>
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                          </button>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">删除</a>
+                          </div>
+                        </div>
+                      </div>
+        </span>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover">
+                  <tr>
+                    <th>日期</th>
+                    <th>设备数</th>
+                    <th>账号数</th>
+					<th>任务成功量/失败</th>
+                  </tr>
+					  <tr>
+                        <td>{$data.uptime|getTime}</td>
+						<td>{$data.todayDe}</td>
+						<td>{$data.todayAc}</td>
+						<td>{$data.sucnum}/{$data.errnum}</td>
+					  </tr>
+                </table>
+              </div>
+			  <div class="box-footer clearfix">
+				</div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    {include file="admin/footer" /}

@@ -79,6 +79,7 @@ if(in_array($a,array('getDevice','replyDevice','getAccount','replyAccount','getM
 		}
 	}
 	if($a=='replyMsgTask'){
+//	    file_put_contents('hhh.txt',$_POST);
 		if(strlen($_POST['data'])>6){
 			replyMsgTask($_POST);
 			$code=0;$success='success';
